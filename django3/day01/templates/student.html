@@ -37,7 +37,8 @@
     <tr>
         <td>{{ stu.id }}</td>
         <td>{{ stu.s_name }}</td>
-        <td><a href="">删除</a></td>
+        <td>{{ stu.g.g_name}}</td>
+        <td><a href="{% url 'app:delstu' %}?s_id={{ stu.id }}">删除</a></td>
     </tr>
     {% endfor %}
 

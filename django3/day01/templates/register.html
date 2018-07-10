@@ -10,7 +10,8 @@
 <script type="text/javascript" src="{% static 'js/public.js' %}"></script>
 </head>
 <body>
-
+<form action="" method="post">
+    {% csrf_token %}
 	<!-- 登录body -->
 	<div class="logDiv">
 		<img class="logBanner" src="{% static 'img/logBanner.png' %}" />
@@ -29,13 +30,14 @@
 				<img class="img1" src="{% static 'img/logPwd.png' %}" />
                 <input type="text" name="password"
 					placeholder="输入用户密码" />
-			</div><div class="lgD">
-				<img class="img1" src="{% static 'img/logPwd.png' %}" />
-            <input type="text" name="password"
-					placeholder="输入用户密码" />
 			</div>
+{#            <div class="lgD">#}
+{#				<img class="img1" src="{% static 'img/logPwd.png' %}" />#}
+{#            <input type="text" name="password"#}
+{#					placeholder="输入用户密码" />#}
+{#			</div>#}
 			<div class="logC">
-				<a href="{% url 'app:login' %}" target="_self"><button>注 册</button></a>
+				<a href="{% url 'app:my_login' %}" target="_self"><button>注 册</button></a>
 			</div>
 		</div>
 	</div>
@@ -47,6 +49,6 @@
 		<p class="p2">123456789</p>
 	</div>
 	<!-- 登录页面底部end -->
-
+</form>
 </body>
 </html>

@@ -10,7 +10,8 @@
 <script type="text/javascript" src="{% static 'js/public.js' %}"></script>
 </head>
 <body>
-
+<form action="" method="post">
+    {% csrf_token %}
 	<!-- 登录body -->
 	<div class="logDiv">
 		<img class="logBanner" src="{% static 'img/logBanner.png' %}" />
@@ -43,6 +44,6 @@
 		<p class="p2">123456789</p>
 	</div>
 	<!-- 登录页面底部end -->
-   
+</form>
 </body>
 </html>
