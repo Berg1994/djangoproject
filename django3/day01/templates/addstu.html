@@ -37,7 +37,7 @@ $("body").click(function(i){ !$(i.target).parents(".select").first().is(s) ? _hi
 </script>
 <div class="form_boxC">
 <p>"<span class="f_cB">*</span>"号为必填项目</p>
-<form action="" method="post">
+<form action="" method="post" enctype="multipart/form-data">
     {% csrf_token %}
 <table cellpadding="0" cellspacing="0">
 <tr>
@@ -45,6 +45,15 @@ $("body").click(function(i){ !$(i.target).parents(".select").first().is(s) ? _hi
 <td>
     <div class="txtbox floatL" style="width:150px;">
         <input style="width:150px;" name="s_name" type="text" size="5" placeholder="请输入学生姓名">
+    </div>
+</td>
+</tr>
+<tr>
+    <tr>
+<th>头像 <span class="f_cB">*</span></th>
+<td>
+    <div class="txtbox floatL" style="width:150px;">
+        <input  name="s_img" type="file"  >
     </div>
 </td>
 </tr>

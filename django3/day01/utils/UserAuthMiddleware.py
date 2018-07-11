@@ -9,14 +9,15 @@ class UserMiddleware(MiddlewareMixin):
 
     def process_request(self, request):
 
-        path = ['/app/my_login/','/app/my_register/']
+        path = ['/app/my_login/', '/app/my_register/']
         if request.path in path:
-            return  None
+            return None
 
         ticket = request.COOKIES.get('ticket')
         if ticket:
-            user = MyUser.objects.filter(ticket=ticket)
+            user = MyUser.objects.filter(ticket=ticket).first()
             if user:
+                request.user = user
                 return None
             else:
                 return HttpResponseRedirect(reverse('app:my_login'))

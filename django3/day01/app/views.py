@@ -7,8 +7,8 @@ from django.http import HttpResponseRedirect
 from django.core.urlresolvers import reverse
 
 # 登录
-from app.models import Grade, Student, MyUser
-from utils.functions import is_login
+from app.models import Grade, Student, MyUser, Promission
+from utils.functions import is_login, get_ticket
 
 
 def login(requset):
@@ -56,7 +56,6 @@ def logout(request):
 
 
 # 首页
-@is_login
 def index(request):
     if request.method == 'GET':
         return render(request, 'index.html')
@@ -127,11 +126,14 @@ def addstu(request):
         g_id = request.POST.get('g_id')
         # 性别
         s_sex = request.POST.get('s_sex')
+        img = request.FILES.get('s_img')
         # 建立班级实例  并且id 一致 应对学生ID
         grade = Grade.objects.filter(id=g_id).first()
         # 创建学生信息
         Student.objects.create(s_name=s_name,
-                               g=grade)
+                               g=grade,
+                               img=img,
+                               s_sex=s_sex)
         g = Grade.objects.filter(id=g_id).first()
         return HttpResponseRedirect(reverse('app:student'), {'g': g})
 
@@ -191,9 +193,10 @@ def my_login(request):
             if check_password(password, user.password):
                 # 在客户端cookie中保存一个session id值
                 res = HttpResponseRedirect(reverse('app:index'))
-                res.set_cookie('ticket','test',max_age=1000)
+                ticket = get_ticket()
+                res.set_cookie('ticket', ticket)
                 # 在服务端保存一个session 值
-                user.ticket = 'test'
+                user.ticket = ticket
                 user.save()
 
                 return res
@@ -209,3 +212,14 @@ def my_logout(request):
         response = HttpResponseRedirect(reverse('app:my_login'))
         response.delete_cookie('ticket')
         return response
+
+
+def test(request):
+    if request.method == 'GET':
+        # 查询用户id =1 有哪些权限
+
+        user = MyUser.objects.get(id=1)
+        user_promisstion = [i.p_name for i in user.r.r_p.all()]
+
+        # 查询有班级列表权限的用户
+        p = Promission.objects.get(p_name='GRADELIST')

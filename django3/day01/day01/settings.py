@@ -48,7 +48,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    # 'utils.UserAuthMiddleware.UserMiddleware'
+    'utils.UserAuthMiddleware.UserMiddleware'
 ]
 
 ROOT_URLCONF = 'day01.urls'
@@ -131,3 +131,7 @@ STATICFILES_DIRS = [
 
 # 没有登录，跳转到该地址
 LOGIN_URL = '/app/login/'
+
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')

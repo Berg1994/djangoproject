@@ -9,11 +9,13 @@
 <head></head>
 
 <body id="bg">
+    {{ user.username }}
 	<!-- 左边节点 -->
 	<div class="container">
 
 		<div class="leftsidebar_box">
 			<a href="main.html" target="main"><div class="line">
+
 					<img src="/static/img/coin01.png" />&nbsp;&nbsp;首页
 				</div></a>
 			<dl class="system_log">
@@ -23,18 +25,24 @@
 						src="/static/img/coin19.png" /><img class="icon4"
 						src="/static/img/coin20.png" />
 				</dt>
+                {% for p in user.r.r_p.all %}
+                {% ifequal p.p_name 'GRADELIST' %}
 				<dd>
 					<img class="coin11" src="/static/img/coin111.png" /><img class="coin22"
 						src="/static/img/coin222.png" />
 					<a class="cks" href="{% url 'app:grade' %}"
 						target="main">班级列表</a><img class="icon5" src="/static/img/coin21.png" />
 				</dd>
+                    {% endifequal %}
+                    {% ifequal p.p_name 'GRADEADD' %}
 				<dd>
 					<img class="coin11" src="/static/img/coin111.png" /><img class="coin22"
 						src="/static/img/coin222.png" />
 					<a class="cks" href="{% url 'app:addgrade' %}"
 						target="main">班级添加</a><img class="icon5" src="/static/img/coin21.png" />
 				</dd>
+                {% endifequal %}
+                    {% endfor %}
 			</dl>
 			<dl class="system_log">
 				<dt>
@@ -43,18 +51,26 @@
 						src="/static/img/coin19.png" /><img class="icon4"
 						src="/static/img/coin20.png" />
 				</dt>
+                {% for p in user.r.r_p.all  %}
+                    {% ifequal p.p_name 'STUDENTLIST' %}
 				<dd>
 					<img class="coin11" src="/static/img/coin111.png" /><img class="coin22"
 						src="/static/img/coin222.png" />
 					<a class="cks" href="{% url 'app:student' %}"
 						target="main">学生列表</a><img class="icon5" src="/static/img/coin21.png" />
 				</dd>
+                    {% endifequal %}
+                    {% ifequal p.p_name 'STUDENTADD' %}
 				<dd>
 					<img class="coin11" src="/static/img/coin111.png" /><img class="coin22"
 						src="/static/img/coin222.png" />
 					<a class="cks" href="{% url 'app:addstu' %}"
 						target="main">添加学生</a><img class="icon5" src="/static/img/coin21.png" />
 				</dd>
+                {% endifequal %}
+                {% endfor %}
+
+
 			</dl>
 			<dl class="system_log">
 				<dt>

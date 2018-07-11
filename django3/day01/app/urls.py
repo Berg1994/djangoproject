@@ -38,4 +38,7 @@ urlpatterns = [
     # 编辑学生
     url(r'editgrade/', views.editgrade, name='editgrade'),
 
+    #测试
+    url(r'test/',views.test,name='test')
+
 ]
