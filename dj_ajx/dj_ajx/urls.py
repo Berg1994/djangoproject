@@ -16,9 +16,13 @@ Including another URLconf
 from django.conf.urls import url, include
 from django.contrib import admin
 from app import views
+from dj_ajx import settings
+from django.contrib.staticfiles.urls import static
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^axf/',include('app.urls', namespace='axf')),
     url(r'^user/',include('users.urls',namespace='user'))
 ]
+
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT )

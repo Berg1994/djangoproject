@@ -5,13 +5,28 @@ from django.shortcuts import render
 from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect
 # 个人主页
+from app.models import OrderModel
 from users.models import UserModel, UserTicketModel
 from utils.functions import get_ticket
 
 
 def mine(request):
     if request.method == 'GET':
-        return render(request, 'mine/mine.html')
+        user = request.user
+        data = {}
+        if user.id:
+            orders = OrderModel.objects.filter(user=user)
+            wait_pay, payed = 0, 0
+            for order in orders:
+                #未支付的值是0  支付以上为1+
+                if order.o_status:
+                    payed += 1
+                else:
+                    wait_pay += 1
+            data['payed'] = payed
+            data['wait_pay'] = wait_pay
+
+        return render(request, 'mine/mine.html', data)
 
 
 # 注册
@@ -23,16 +38,16 @@ def register(request):
         email = request.POST.get('email')
         password = request.POST.get('password')
         icon = request.FILES.get('icon')
-
+        # 判断填写是否完整
         if not all([username, email, password, icon]):
-            msg = '请填写完整'
-            return render(request, 'user/user_register.html', {'msg': msg})
-        password = make_password(password)
-        user = UserModel.objects.create(username=username,
-                                        email=email,
-                                        password=password,
-                                        icon=icon,
-                                        )
+            data = {
+                'msg': '请填写完整'
+            }
+            return render(request, 'user/user_register.html', data)
+        UserModel.objects.create(username=username,
+                                 password=make_password(password),
+                                 email=email,
+                                 icon=icon)
         return HttpResponseRedirect(reverse('user:login'))
 
 
@@ -46,8 +61,8 @@ def login(request):
         if not all([username, password]):
             msg = '请填写完整'
             return render(request, 'user/user_login.html', {'msg': msg})
-        user = UserModel.objects.filter(username=username).first()
-        if user:
+        if UserModel.objects.filter(username=username).exists():
+            user = UserModel.objects.get(username=username)
             # checkpassword 返回布尔值  前面填获取的密码 后面是服务器已经加密的密码
             if check_password(password, user.password):
                 ticket = get_ticket()
@@ -61,7 +76,16 @@ def login(request):
                                                out_time=out_time)
 
                 return res
-            msg = '账号或者密码错误'
-            return render(request, 'user/user_login.html', {'msg': msg})
-        msg = '账号或者密码错误'
-        return render(request, 'user/user_login.html', {'msg': msg})
+            else:
+                data = {'msg': '账号或者密码错误'}
+        else:
+            data = {'msg': '账号或者密码错误'}
+        return render(request, 'user/user_login.html', data)
+
+
+# 注销
+def logout(request):
+    if request.method == 'GET':
+        response = HttpResponseRedirect(reverse('user:login'))
+        response.delete_cookie('ticket')
+        return response

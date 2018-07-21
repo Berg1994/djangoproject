@@ -1,18 +1,19 @@
 {% extends 'base_main.html' %}
 {% load static %}
 {% block extCSS %}
-{{ block.super }}
+    {{ block.super }}
     <link rel="stylesheet" href="{% static 'app/cart/cart.css' %}">
 {% endblock %}
 
 {% block EXTJS %}
     {{ block.super }}
     <script type="text/javascript" src="{% static 'app/cart/js/cart.js' %}"></script>
+    <script type="text/javascript" src="{% static 'app/common/js/functions.js' %}"></script>
 {% endblock %}
 
 
 {% block content %}
-
+    {% csrf_token %}
     <div id="cart">
 
         <h3>购物车</h3>
@@ -22,8 +23,10 @@
             <section class="clear">
 
                 <ul>
-                    <li>收货人:王帅帅<div><p><span><a href="#">修改&gt;</a></span></p></div></li>
-                    <li>电话:8008208820 </li>
+                    <li>收货人:王帅帅
+                        <div><p><span><a href="#">修改&gt;</a></span></p></div>
+                    </li>
+                    <li>电话:8008208820</li>
                     <li>收货地址:宝胜北里西区28号天丰利商城</li>
 
                 </ul>
@@ -55,30 +58,33 @@
                 <menu>
 
                     <ul>
-                        <!--购物车信息展示-->
-                            <li class="menuList" cartid="">
+                        {% for cart in carts %}
+                            <!--购物车信息展示-->
+                            <li class="menuList" cartid="" id="cart_to_del_{{ cart.goods.id }}" >
                                 <div class="confirm">
-                                    <span class="is_choose" is_select="">
-
-                                            <span>√</span>
-
-                                            <span></span>
-
+                                    <span>
+                                        {% if cart.is_select %}
+                                            <span id="cart_status_{{ cart.id }}"
+                                                  onclick="change_cart_status({{ cart.id }})">√</span>
+                                        {% else %}
+                                            <span id="cart_status_{{ cart.id }}"
+                                                  onclick="change_cart_status({{ cart.id }})">x</span>
+                                        {% endif %}
 
                                     </span>
                                 </div>
                                 <a href="#">
-                                    <img src="" alt="">
-                                    <p></p>
+                                    <img src="{{ cart.goods.productimg }}" alt="">
+                                    <p>{{ cart.goods.productlongname }}</p>
                                 </a>
                                 <section>
-                                    <button class="subShopping">-</button>
-                                    <span></span>
-                                    <button class="addShopping">+</button>
+                                    <button onclick="goods_sub({{ cart.goods.id }}) ">-</button>
+                                    <span id="goods_{{ cart.goods.id }}">{{ cart.c_num }}</span>
+                                    <button onclick="goods_add({{ cart.goods.id }})">+</button>
                                 </section>
                             </li>
-                        <!--购物车数据处理结束-->
-
+                            <!--购物车数据处理结束-->
+                        {% endfor %}
 
                         <li class="payTheBill">
 
@@ -94,10 +100,10 @@
 
                             <p>
                                 <span>全选</span>
-                                <span>总价:</span>
+                                <span id="all_price">总价:</span>
                             </p>
 
-                            <span id="generate_order">下单</span>
+                            <span id="get_order" onclick="make_order({{ cart.id }})">下单</span>
 
                         </li>
 
@@ -105,27 +111,26 @@
 
                 </menu>
 
-{#            <div class="menuList">#}
-{##}
-{#                {% for cart in carts %}#}
-{##}
-{#                    <div class="confirm">#}
-{#                    <span>#}
-{#                        <span>√</span>#}
-{#                    </span>#}
-{#                    </div>#}
-{##}
-{#                    <a href="#">#}
-{#                        <img src="{{ cart.goods.productimg }}" alt="{{ cart.goods.productlongname }}">#}
-{#                        <p>{{ cart.goods.productlongname }}</p>#}
-{#                    </a>#}
-{##}
-{#                {% endfor %}#}
-{##}
-{##}
-{#            </div>#}
+                {#            <div class="menuList">#}
+                {##}
+                {#                {% for cart in carts %}#}
+                {##}
+                {#                    <div class="confirm">#}
+                {#                    <span>#}
+                {#                        <span>√</span>#}
+                {#                    </span>#}
+                {#                    </div>#}
+                {##}
+                {#                    <a href="#">#}
+                {#                        <img src="{{ cart.goods.productimg }}" alt="{{ cart.goods.productlongname }}">#}
+                {#                        <p>{{ cart.goods.productlongname }}</p>#}
+                {#                    </a>#}
+                {##}
+                {#                {% endfor %}#}
+                {##}
+                {##}
+                {#            </div>#}
             </section>
-
 
 
         </div>

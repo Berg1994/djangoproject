@@ -47,7 +47,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    # 'utils.login_middleware.UserMiddle',
+    'utils.login_middleware.UserMiddle',
 ]
 
 ROOT_URLCONF = 'dj_ajx.urls'
@@ -76,7 +76,7 @@ WSGI_APPLICATION = 'dj_ajx.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'dj_axf',
+        'NAME': 'axf',
         'PASSWORD': '123456',
         'PORT': 3306,
         'HOST': 'localhost',
@@ -124,3 +124,6 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static')
 ]
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR,'media')
