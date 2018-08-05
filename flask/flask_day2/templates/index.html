@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+
+{% block title %}
+我是index
+{% endblock %}
+
+{% block content %}
+
+{% macro hello() %}
+<h3>你好。python</h3>
+{% endmacro %}
+
+{{ hello() }}
+
+<!--偶数为红，绿色为奇-->
+{% for i in list1 %}
+{% if i%2 == 0 %}
+<P style="color: red">{{ i }}</P>
+{% else %}
+<P style="color: green">{{ i }}</P>
+{% endif %}
+{% endfor %}
+
+
+<br>
+<!--第一个参数展示为红色，最后一个参数战术绿色-->
+{% for i in list1 %}
+<!--revindex 反序-->
+{{ loop.revindex }}
+{{ loop.index }}
+{% if loop.first %}
+<p style="color: red">{{ i }}</p>
+{% endif %}
+
+{% if loop.last %}
+<p style="color: green">{{ i }}</p>
+{% endif %}
+<br>
+{% endfor %}
+
+{{ p1 | upper }}
+{{ p1 | length }}
+<br>
+{{ p2 | upper }}
+{{ p2 | length }}
+<br>
+
+{% endblock %}

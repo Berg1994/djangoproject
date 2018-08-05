@@ -1,0 +1,13 @@
+{% block content %}
+
+    {% from 'functions.html' import hello %}
+    {% from 'functions.html' import show_goods %}
+
+    {{ hello() }}
+    {{ hello() }}
+
+    {{ show_goods(1, '可爱多'， 5) }}
+    {{ show_goods(1, '梦龙'， 15) }}
+    {{ show_goods(1, '娃娃头'， 2) }}
+
+{% endblock %}

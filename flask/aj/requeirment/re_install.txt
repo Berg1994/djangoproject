@@ -1,0 +1,9 @@
+flask
+flask-script
+flask-sqlalchemy
+flask-blueprint
+pymysql
+pillow
+redis
+flask-debugtoolbar
+flask-session

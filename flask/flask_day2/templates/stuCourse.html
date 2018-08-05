@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+
+    {% for course in courses %}
+        {{ course.c_name }} <a href="{{ url_for('first.stu_del_course',id=id,c_id=course.id) }}">删除课程</a>
+        <br>
+    {% else %}
+
+        <a href="{{ url_for('first.stu_add_course',id=id) }}">添加课程</a>
+    {% endfor %}
+
+
+{% endblock %}

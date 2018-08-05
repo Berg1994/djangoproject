@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    分数
+{% endblock %}
+
+{% block extCSS %}
+    <link rel="stylesheet" href="{{url_for('static', filename='css/index.css') }}">
+
+{% endblock %}
+
+{% block content %}
+    {{ scores }}
+<br>
+    <ur>
+    {% for score in scores %}
+        {% if loop.first %}
+            <li style="color:red;">{{ score }}</li>
+        {% elif loop.last %}
+            <li style="color:yellow">{{ score }}</li>
+        {% else %}
+            <li>{{ loop.index }}：{{ score }}</li>
+        {% endif %}
+    {% endfor %}
+    </ur>
+<br>
+{{ content_h2 }}<br>
+{{ content_h2|striptags }}
+{{ content_h2|safe }}
+
+    {% from 'common.html' import show_goods %}
+    {{ show_goods('1', '可爱多') }}
+    <br>
+    {{ show_goods('2', '梦龙') }}
+    <br>
+    {{ show_goods('3', '大舌头') }}
+
+    <br>
+    {% from 'common.html' import say %}
+    {{ say() }}
+{% endblock %}
