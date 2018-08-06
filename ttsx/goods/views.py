@@ -170,6 +170,7 @@ def add_to_cart(request):
                 goods = CartGoodsMOdel.objects.filter(goods_id=goods_id, cart_id=cart.id).first()
                 if goods:
                     goods.in_cart = 1
+                    data['count'] = goods.count
                     goods.save()
                     return JsonResponse(data)
 

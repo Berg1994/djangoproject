@@ -42,7 +42,7 @@ def add_cart_count(request):
         if user.id:
             cart = CartModel.objects.filter(user_id=user.id).first()
             if cart:
-                cart_goods = CartGoodsMOdel.objects.filter(cart_id=cart.id, goods_id=goods_id).first()
+                cart_goods = CartGoodsMOdel.objects.filter(cart_id=cart.id, goods_id=goods_id,in_cart=1).first()
                 if cart_goods:
                     cart_goods.count += 1
                     cart_goods.save()
