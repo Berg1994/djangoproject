@@ -43,7 +43,7 @@
             <input type="button" class="input_btn fr" name="" value="搜索">
         </div>
         <div class="guest_cart fr">
-            <a href="{% url 'carts:cart' %}" class="cart_name fl">我的购物车</a>
+            <a href="{% url 'carts:cart' %}" class="cart_name fl" >我的购物车</a>
             <div class="goods_count fl" id="show_count">1</div>
         </div>
     </div>
@@ -90,7 +90,7 @@
                     <div class="subtitle fl">
                         <span>|</span>
                        {% for val in value %}
-                            <a href="{% url 'goods:good_detail' val.id %}">{{ val.g_name }}</a>
+                            <a href="/goods/goods_detail/?id={{ val.id }}">{{ val.g_name }}</a>
                         {% endfor %}
                     </div>
                     <a href="{% url 'carts:list' %}" class="goods_more fr" id="fruit_more">查看更多 ></a>
@@ -105,7 +105,10 @@
                         {% for val in value %}
                         <li>
                             <h4><a href="">{{ val.g_name }}</a></h4>
-                            <a href="{% url 'goods:good_detail' val.id %}"><img src="/static/{{ val.g_img }}"></a>
+
+                            <a href="/goods/goods_detail/?id={{ val.id }}"><img src="/static/{{ val.g_img }}"></a>
+{#                            <a href="{% url 'goods:goods_detail' val.id %}"><img src="/static/{{ val.g_img }}"></a>#}
+
                             <div class="prize">{{ val.g_price }}</div>
                         </li>
                             {% endfor %}

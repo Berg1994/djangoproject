@@ -3,6 +3,11 @@
 	{% block title %}
         天天生鲜-商品详情
     {% endblock %}
+{% block extJS %}
+    {{ block.super }}
+    <script type="text/javascript" src="{% static 'back_static/js/functions.js' %}"></script>
+{% endblock %}
+
 {% block extCSS %}
 {{ block.super }}
 {% endblock %}
@@ -26,7 +31,7 @@
 					<span>|</span>
 					<a href="{% url 'user:user_center_info' %}">用户中心</a>
 					<span>|</span>
-					<a href="{% url 'carts:cart' %}">我的购物车</a>
+					<a href="{% url 'carts:cart' %}" >我的购物车</a>
 					<span>|</span>
 					<a href="{% url 'user:user_center_order' %}">我的订单</a>
 				</div>
@@ -45,7 +50,7 @@
 		</div>
 		<div class="guest_cart fr">
 			<a href="{% url 'carts:cart' %}" class="cart_name fl">我的购物车</a>
-			<div class="goods_count fl" id="show_count">1</div>
+			<div class="goods_count fl" id="show_count"></div>
 		</div>
 	</div>
 
@@ -101,10 +106,10 @@
 					<a href="javascript:;" class="minus fr" onclick="sub_count({{ goods.id }})">-</a>
 				</div> 
 			</div>
-			<div class="total">总价：<em>16.80元</em></div>
+			<div class="total">总价：<em id="total_price"></em></div>
 			<div class="operate_btn">
 				<a href="javascript:;" class="buy_btn">立即购买</a>
-				<a href="javascript:;" class="add_cart" id="add_cart">加入购物车</a>				
+				<a href="javascript:;" class="add_cart" id="add_cart" onclick="add_to_cart({{ goods.id }})">加入购物车</a>
 			</div>
 		</div>
 	</div>
@@ -179,48 +184,7 @@
 
 			});
 		})
-    function add_count(id) {
-        var csrf = $('input[name="csrfmiddlewaretoken"]').val();
 
-        $.ajax({
-            url:'/goods/addcount/',
-            data:{'goods_id':id},
-            type:'POST',
-            dataType:'json',
-            headers:{'X-CSRFToken':csrf},
-            success:function (data) {
-                $('.num_show').val(data.count)
-            },
-            error:function (data) {
-                alert('请求失败')
-            }
-
-
-
-        })
-    }
-
-    function sub_count(id) {
-        var csrf = $('input[name="csrfmiddlewaretoken"]').val();
-
-        $.ajax({
-            url:'/goods/subcount/',
-            data:{'goods_id':id},
-            type:'POST',
-            dataType:'json',
-            headers:{'X-CSRFToken':csrf},
-            success:function (data) {
-                 $('.num_show').val(data.count)
-            },
-            error:function (data) {
-                alert('请求失败')
-            }
-        })
-    }
-    $.get('/goods/count/',function (data) {
-
-
-    })
 
 	</script>
 

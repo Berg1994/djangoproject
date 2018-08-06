@@ -38,8 +38,9 @@ def index(request):
 
 
 # 商品详情
-def good_detail(request, id):
+def goods_detail(request):
     if request.method == 'GET':
+        id = request.GET.get('id')
         goods = GoodsModel.objects.filter(id=id).first()
         return render(request, 'back_manage/detail.html', {'goods': goods})
 
@@ -127,7 +128,66 @@ def sub_count(request):
         return JsonResponse(data)
 
 
+# 展示商品数量
 def show_count(request):
     if request.method == 'GET':
+        goods_id = request.GET.get('id')
+        data = {
+            'code': 200,
+            'msg': '请求成功'
+        }
         user = request.user
+        cart = CartModel.objects.get(user_id=user.id)
+        if cart:
+            data['cart_count'] = cart.cartgoodsmodel_set.filter(in_cart=1).count()
+            cart_goods = CartGoodsMOdel.objects.filter(goods=goods_id).first()
+            if cart_goods:
+                data['count'] = cart_goods.count
+                goods = GoodsModel.objects.filter(id=goods_id).first()
+                data['total_price'] = goods.g_price * cart_goods.count
+                data['cart_id'] = cart.id
+                return JsonResponse(data)
+            data['count'] = 0
+            return JsonResponse(data)
+
+        data['code'] = 1003
+        data['msg'] = '请添加商品'
+        return JsonResponse(data)
+
+
+# 添加到购物车 修改商品状态
+def add_to_cart(request):
+    if request.method == 'POST':
+        data = {
+            'code': 200,
+            'msg': '请求成功',
+        }
+        goods_id = request.POST.get('goods_id')
+        user = request.user
+        if user.id:
+            cart = CartModel.objects.filter(user_id=user.id).first()
+            if cart:
+                goods = CartGoodsMOdel.objects.filter(goods_id=goods_id, cart_id=cart.id).first()
+                if goods:
+                    goods.in_cart = 1
+                    goods.save()
+                    return JsonResponse(data)
+
+                cart_goods = CartGoodsMOdel.objects.create(goods_id=goods_id, cart_id=cart.id)
+                cart_goods.count = 1
+                cart_goods.in_cart = 1
+                data['count'] = cart_goods.count
+                cart_goods.save()
+                return JsonResponse(data)
+            cart = CartModel.objects.filter(user_id=user.id).first()
+            cart_goods = CartGoodsMOdel.objects.create(goods_id=goods_id, cart_id=cart.id)
+            cart_goods.count = 1
+            cart_goods.in_cart = 1
+            data['count'] = cart_goods.count
+            cart_goods.save()
+            return JsonResponse(data)
+        data['code'] = 1001
+        data['msg'] = '用户未登录'
+        return JsonResponse(data)
+
 

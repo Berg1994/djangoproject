@@ -22,6 +22,10 @@ class CartGoodsMOdel(models.Model):
     goods = models.ForeignKey(GoodsModel)
     # 购买数量
     count = models.IntegerField(default=1)
+    #是否加入购物车
+    in_cart = models.BooleanField(default=0)
+    #是否被选中
+    is_select = models.BooleanField(default=0)
 
     class Meta():
         db_table = 'ttsx_cart_goods'
