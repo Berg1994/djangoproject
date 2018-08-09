@@ -1,15 +1,22 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+{% extends 'back_manage/base_main.html' %}
 {% load static %}
-<head>
-	<meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
-	<title>天天生鲜-购物车</title>
-	<link rel="stylesheet" type="text/css" href="{% static 'back_static/css/reset.css' %}">
-	<link rel="stylesheet" type="text/css" href="{% static 'back_static/css/main.css' %}">
-	<script type="text/javascript" src="{% static 'back_static/js/functions.js' %}"></script>
+	{% block title %}
+        天天生鲜-购物车
+    {% endblock %}
+{% block extJS %}
+    {{ block.super }}
+   <script type="text/javascript" src="{% static 'back_static/js/cart.js' %}"></script>
+{% endblock %}
 
-</head>
-<body>
+{% block extCSS %}
+<link rel="stylesheet" type="text/css" href="{% static 'back_static/css/reset.css' %}">
+	<link rel="stylesheet" type="text/css" href="{% static 'back_static/css/main.css' %}">
+{{ block.super }}
+{% endblock %}
+
+
+{% block content %}
+
 
 	<div class="header_con">
 		<div class="header">
@@ -67,12 +74,13 @@
 		<li class="col06">
 			<div class="num_add">
 				<a href="javascript:;" class="add fl" onclick="sub_cart_count({{ val.goods.id }})">-</a>
-				<input type="text" class="num_show fl" value="{{ val.count }}">
+				<input type="text" class="num_show_{{ val.goods.id }} fl" value="">
 				<a href="javascript:;" class="minus fl" onclick="add_cart_count({{ val.goods.id }})">+</a>
+
 			</div>
 		</li>
-		<li class="col07">元</li>
-		<li class="col08"><a href="javascript:;">删除</a></li>
+		<li class="col07" id="xiaoji_{{ val.goods.id }}">元</li>
+		<li class="col08"><a href="javascript:;" onclick="del_cart_goods({{ val.goods.id }})">删除</a></li>
 	</ul>
     {% endfor%}
 	{% endfor %}
@@ -80,7 +88,7 @@
 	<ul class="settlements">
 		<li class="col01"><input type="checkbox" name="" checked=""></li>
 		<li class="col02">全选</li>
-		<li class="col03">合计(不含运费)：<span>¥</span><em>42.60</em><br>共计<b>{{ cart_goods_count }}</b>件商品</li>
+		<li class="col03">合计(不含运费)：<span>¥</span><em id="total_price">42.60</em><br>共计<b>{{ cart_goods_count }}</b>件商品</li>
 		<li class="col04"><a href="place_order.html">去结算</a></li>
 	</ul>
 
@@ -98,5 +106,5 @@
 		<p>电话：010-****888    京ICP备*******8号</p>
 	</div>
 
-</body>
-</html>
+
+{% endblock %}

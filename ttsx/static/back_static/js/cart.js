@@ -1,15 +1,14 @@
-function add_count(id) {
+function add_cart_count(id) {
     var csrf = $('input[name="csrfmiddlewaretoken"]').val();
-
     $.ajax({
-        url: '/goods/addcount/',
+        url: '/carts/addcount/',
         data: {'goods_id': id},
         type: 'POST',
         dataType: 'json',
         headers: {'X-CSRFToken': csrf},
         success: function (data) {
 
-            count()
+            cart_count()
         },
         error: function (data) {
             alert('请求失败3')
@@ -19,18 +18,17 @@ function add_count(id) {
     })
 }
 
-function sub_count(id) {
+function sub_cart_count(id) {
     var csrf = $('input[name="csrfmiddlewaretoken"]').val();
-
     $.ajax({
-        url: '/goods/subcount/',
+        url: '/carts/subcount/',
         data: {'goods_id': id},
         type: 'POST',
         dataType: 'json',
         headers: {'X-CSRFToken': csrf},
         success: function (data) {
 
-            count()
+            cart_count()
         },
         error: function (data) {
             alert('请求失败2')
@@ -39,49 +37,54 @@ function sub_count(id) {
 }
 
 
-function count() {
+function cart_count() {
 
-    var id = (location.search).split('=')[1];
     var csrf = $('input[name="csrfmiddlewaretoken"]').val();
+    var total_price = 0;
     $.ajax({
-        url: '/goods/count/',
-        data: {'id': id},
+        url: '/carts/count/',
         type: 'GET',
         dataType: 'json',
         headers: {'X-CSRFToken': csrf},
+
         success: function (data) {
             if (data.code == '200') {
-                $('#show_count').html(data.cart_count);
-                $('.num_show').val(data.count);
-                $('#total_price').html(data.total_price);
+                for (i = 0; i < data.goods_list.length; i++) {
+                    $('.num_show_' + data.goods_list[i]['id']).val(data.goods_list[i]['count']);
+                    $('#xiaoji_' + data.goods_list[i]['id']).html(data.goods_list[i]['total'] + '元');
+                    total_price +=  parseFloat(data.goods_list[i]['total']);
+                    $('#total_price').html(total_price)
+                }
+
 
             }
         },
         error: function (data) {
-            alert(222)
+
         }
     })
 }
 
-count();
+cart_count();
 
-function add_to_cart(id) {
+function del_cart_goods(id) {
     var csrf = $('input[name="csrfmiddlewaretoken"]').val();
     $.ajax({
-        url: '/goods/addtocart/',
+        url: '/carts/delcartgoods/',
         data: {'goods_id': id},
         type: 'POST',
         dataType: 'json',
         headers: {'X-CSRFToken': csrf},
         success: function (data) {
-            count();
+            if(data.code == '200'){
+                cart_count();
+                location.reload()
+            }
         },
         error: function (data) {
-            alert('请求失败1')
+            alert('请求失败')
         }
+
 
     })
 }
-
-
-
